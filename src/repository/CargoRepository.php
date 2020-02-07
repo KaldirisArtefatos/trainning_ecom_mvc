@@ -17,7 +17,8 @@ namespace Repository{
             $stmt = $this->connection->prepare('
                 SELECT 
                     id, 
-                    nome,                                          
+                    nome,
+                    departamento                                          
                 FROM cargo 
                 WHERE id = :id
             ');
@@ -31,7 +32,7 @@ namespace Repository{
         public function findAll()
         {
             $stmt = $this->connection->prepare('
-                SELECT id, nome FROM cargo
+                SELECT id, nome, departamento FROM cargo
             ');
             $stmt->execute();            
             $cargos = $stmt->fetchAll();
@@ -39,7 +40,7 @@ namespace Repository{
             
             if($cargos) {
                 foreach($cargos as $cargo) {
-                    $result[$cargo['id']] = new Cargo($cargo['id'], $cargo["nome"]);
+                    $result[$cargo['id']] = new Cargo($cargo['id'], $cargo["nome"],$cargo["departamento"]);
                 }
             }
             return $result;
@@ -57,11 +58,11 @@ namespace Repository{
 
             $stmt = $this->connection->prepare('
                 INSERT INTO cargo 
-                    (nome) 
+                    (nome,departamento) 
                 VALUES 
-                    (:nome)
+                    (:nome,:departamento)
             ');        
-            $stmt->bindParam(':nome', $cargo->nome);            
+            $stmt->bindParam(':nome', $cargo->nome,':departamento',$cargo->departamento);            
             $stmt->execute();
             $id = $this->connection->lastInsertId();
             return $id;
@@ -76,10 +77,12 @@ namespace Repository{
             }
             $stmt = $this->connection->prepare('
                 UPDATE cargo
-                SET nome = :nome                     
+                SET nome = :nome,   
+                    departamento = :departamento                  
                 WHERE id = :id
             ');
             
+            $stmt->bindParam(':departamento', $cargo->departamento);            
             $stmt->bindParam(':nome', $cargo->nome);            
             $stmt->bindParam(':id', $cargo->id);
             return $stmt->execute();

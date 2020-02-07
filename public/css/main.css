@@ -1,0 +1,20 @@
+table{
+    border: 1px solid gray;
+    margin: auto;
+    width: 400px;    
+}
+ 
+table tbody tr:nth-child(odd) {
+    background-color: lightgray;    
+}
+ 
+table tbody tr td {
+    border: 1px solid lightgray;    
+}
+ 
+ 
+table th{     
+    background-color: black;
+    color: white;
+}
+

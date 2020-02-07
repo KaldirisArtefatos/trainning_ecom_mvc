@@ -10,10 +10,11 @@ class Cargo extends BaseModel implements CrudInterface {
         
         private $nome;
  
-        public function __construct($id = 0, $nome = '')
+        public function __construct($id = 0, $nome = '', $departamento='')
         {
             $this->id = $id;
             $this->nome = $nome;
+            $this->departamento = $departamento;
         }
  
         public function getNome()
@@ -21,6 +22,12 @@ class Cargo extends BaseModel implements CrudInterface {
             return $this->nome;
         }
  
+        public function getDepartamento()
+        {
+            return $this->departamento;
+        }
+
+
         public function find($id){}
         public function findAll(){
             $repository = new CargoRepository();
